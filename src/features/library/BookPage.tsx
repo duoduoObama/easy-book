@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import {
   ArrowLeft,
@@ -9,9 +9,23 @@ import {
 } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { db } from '../../data/db'
-import type { Chapter } from '../../types'
+import type {
+  Book,
+  Bookmark as BookmarkRecord,
+  Chapter,
+  ChapterSummary,
+  ReadingProgress,
+} from '../../types'
 
 const activeSummaryBackfills = new Set<string>()
+const chapterRowHeight = 72
+
+interface BookPageCache {
+  data?: { book: Book | undefined; progress: ReadingProgress | undefined }
+  directory?: { chapters: ChapterSummary[]; bookmarks: BookmarkRecord[] }
+}
+
+const bookPageCache = new Map<string, BookPageCache>()
 
 async function backfillChapterSummaries(bookId: string, chapterCount: number) {
   if (activeSummaryBackfills.has(bookId)) return
@@ -48,20 +62,64 @@ function formatCount(count: number) {
 export function BookPage() {
   const { bookId = '' } = useParams()
   const navigate = useNavigate()
+  const chapterListRef = useRef<HTMLDivElement>(null)
+  const [visibleRange, setVisibleRange] = useState({ start: 0, end: 30 })
+  const cached = bookPageCache.get(bookId)
   const data = useLiveQuery(async () => {
     const [book, progress] = await Promise.all([
       db.books.get(bookId),
       db.progress.get(bookId),
     ])
     return { book, progress }
-  }, [bookId])
+  }, [bookId], cached?.data)
   const directory = useLiveQuery(async () => {
     const [chapters, bookmarks] = await Promise.all([
       db.chapterSummaries.where('bookId').equals(bookId).sortBy('index'),
       db.bookmarks.where('bookId').equals(bookId).toArray(),
     ])
     return { chapters, bookmarks }
-  }, [bookId])
+  }, [bookId], cached?.directory)
+
+  useEffect(() => {
+    if (data) {
+      bookPageCache.set(bookId, { ...bookPageCache.get(bookId), data })
+    }
+  }, [bookId, data])
+
+  useEffect(() => {
+    if (directory) {
+      bookPageCache.set(bookId, { ...bookPageCache.get(bookId), directory })
+    }
+  }, [bookId, directory])
+
+  useEffect(() => {
+    const updateVisibleRange = () => {
+      const list = chapterListRef.current
+      const count = directory?.chapters.length ?? 0
+      if (!list || !count) return
+      const listTop = list.getBoundingClientRect().top + window.scrollY
+      const viewportTop = Math.max(0, window.scrollY - listTop)
+      const viewportBottom = Math.max(
+        0,
+        window.scrollY + window.innerHeight - listTop,
+      )
+      setVisibleRange({
+        start: Math.max(0, Math.floor(viewportTop / chapterRowHeight) - 8),
+        end: Math.min(
+          count,
+          Math.ceil(viewportBottom / chapterRowHeight) + 8,
+        ),
+      })
+    }
+
+    updateVisibleRange()
+    window.addEventListener('scroll', updateVisibleRange, { passive: true })
+    window.addEventListener('resize', updateVisibleRange)
+    return () => {
+      window.removeEventListener('scroll', updateVisibleRange)
+      window.removeEventListener('resize', updateVisibleRange)
+    }
+  }, [directory?.chapters.length])
 
   useEffect(() => {
     if (
@@ -90,6 +148,7 @@ export function BookPage() {
   const bookmarks = directory?.bookmarks ?? []
   const currentIndex = progress?.chapterIndex ?? 0
   const bookmarkedChapters = new Set(bookmarks.map((item) => item.chapterIndex))
+  const visibleChapters = chapters.slice(visibleRange.start, visibleRange.end)
 
   return (
     <main className="detail-page">
@@ -135,11 +194,16 @@ export function BookPage() {
           </div>
           <span>{book.chapterCount} 章</span>
         </div>
-        <div className="chapter-list">
-          {chapters.length < book.chapterCount && (
-            <p className="no-results">正在加载目录…</p>
-          )}
-          {chapters.map((chapter) => (
+        {chapters.length < book.chapterCount && (
+          <p className="no-results">正在加载目录…</p>
+        )}
+        <div className="chapter-list" ref={chapterListRef}>
+          <div
+            className="chapter-list-spacer"
+            style={{ height: visibleRange.start * chapterRowHeight }}
+            aria-hidden="true"
+          />
+          {visibleChapters.map((chapter) => (
             <button
               key={chapter.id}
               className={chapter.index === currentIndex ? 'current' : ''}
@@ -157,6 +221,15 @@ export function BookPage() {
               )}
             </button>
           ))}
+          <div
+            className="chapter-list-spacer"
+            style={{
+              height:
+                Math.max(0, chapters.length - visibleRange.end) *
+                chapterRowHeight,
+            }}
+            aria-hidden="true"
+          />
         </div>
       </section>
     </main>

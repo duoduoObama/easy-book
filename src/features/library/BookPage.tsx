@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import {
   ArrowLeft,
@@ -8,6 +9,37 @@ import {
 } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { db } from '../../data/db'
+import type { Chapter } from '../../types'
+
+const activeSummaryBackfills = new Set<string>()
+
+async function backfillChapterSummaries(bookId: string, chapterCount: number) {
+  if (activeSummaryBackfills.has(bookId)) return
+  activeSummaryBackfills.add(bookId)
+  try {
+    const batchSize = 200
+    for (let start = 0; start < chapterCount; start += batchSize) {
+      const end = Math.min(chapterCount - 1, start + batchSize - 1)
+      const chapters = await db.chapters
+        .where('[bookId+index]')
+        .between([bookId, start], [bookId, end], true, true)
+        .toArray()
+      await db.chapterSummaries.bulkPut(
+        chapters.map(
+          ({ id, bookId: idOfBook, index, title, characterCount }: Chapter) => ({
+            id,
+            bookId: idOfBook,
+            index,
+            title,
+            characterCount,
+          }),
+        ),
+      )
+    }
+  } finally {
+    activeSummaryBackfills.delete(bookId)
+  }
+}
 
 function formatCount(count: number) {
   return count >= 10_000 ? `${(count / 10_000).toFixed(1)} 万字` : `${count} 字`
@@ -17,14 +49,29 @@ export function BookPage() {
   const { bookId = '' } = useParams()
   const navigate = useNavigate()
   const data = useLiveQuery(async () => {
-    const [book, chapters, progress, bookmarks] = await Promise.all([
+    const [book, progress] = await Promise.all([
       db.books.get(bookId),
-      db.chapters.where('bookId').equals(bookId).sortBy('index'),
       db.progress.get(bookId),
+    ])
+    return { book, progress }
+  }, [bookId])
+  const directory = useLiveQuery(async () => {
+    const [chapters, bookmarks] = await Promise.all([
+      db.chapterSummaries.where('bookId').equals(bookId).sortBy('index'),
       db.bookmarks.where('bookId').equals(bookId).toArray(),
     ])
-    return { book, chapters, progress, bookmarks }
+    return { chapters, bookmarks }
   }, [bookId])
+
+  useEffect(() => {
+    if (
+      data?.book &&
+      directory &&
+      directory.chapters.length < data.book.chapterCount
+    ) {
+      void backfillChapterSummaries(data.book.id, data.book.chapterCount)
+    }
+  }, [data?.book, directory])
 
   if (!data) return <div className="loading-screen">正在打开书籍…</div>
   if (!data.book) {
@@ -38,7 +85,9 @@ export function BookPage() {
     )
   }
 
-  const { book, chapters, progress, bookmarks } = data
+  const { book, progress } = data
+  const chapters = directory?.chapters ?? []
+  const bookmarks = directory?.bookmarks ?? []
   const currentIndex = progress?.chapterIndex ?? 0
   const bookmarkedChapters = new Set(bookmarks.map((item) => item.chapterIndex))
 
@@ -84,9 +133,12 @@ export function BookPage() {
             <p className="eyebrow">CONTENTS</p>
             <h2>目录</h2>
           </div>
-          <span>{chapters.length} 章</span>
+          <span>{book.chapterCount} 章</span>
         </div>
         <div className="chapter-list">
+          {chapters.length < book.chapterCount && (
+            <p className="no-results">正在加载目录…</p>
+          )}
           {chapters.map((chapter) => (
             <button
               key={chapter.id}

@@ -31,6 +31,14 @@ export interface Chapter {
   characterCount: number
 }
 
+export interface ChapterSummary {
+  id: string
+  bookId: string
+  index: number
+  title: string
+  characterCount: number
+}
+
 export interface ReadingProgress {
   bookId: string
   chapterIndex: number

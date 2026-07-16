@@ -29,6 +29,9 @@ describe('book repository', () => {
     const book = await importParsedBook(parsed, { name: '测试书.txt', size: 12 })
     expect(await db.books.count()).toBe(1)
     expect(await db.chapters.where('bookId').equals(book.id).count()).toBe(1)
+    expect(
+      await db.chapterSummaries.where('bookId').equals(book.id).count(),
+    ).toBe(1)
     await expect(
       importParsedBook(parsed, { name: '副本.txt', size: 12 }),
     ).rejects.toThrow('已经在书架')
@@ -52,6 +55,7 @@ describe('book repository', () => {
     await deleteBook(book.id)
     expect(await db.books.count()).toBe(0)
     expect(await db.chapters.count()).toBe(0)
+    expect(await db.chapterSummaries.count()).toBe(0)
     expect(await db.progress.count()).toBe(0)
     expect(await db.bookmarks.count()).toBe(0)
   })

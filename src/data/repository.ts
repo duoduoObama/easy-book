@@ -43,17 +43,33 @@ export async function importParsedBook(
     createdAt: now,
     updatedAt: now,
   }
-  await db.transaction('rw', db.books, db.chapters, async () => {
-    await db.books.add(book)
-    await db.chapters.bulkAdd(
-      parsed.chapters.map((chapter, index) => ({
+  await db.transaction(
+    'rw',
+    db.books,
+    db.chapters,
+    db.chapterSummaries,
+    async () => {
+      await db.books.add(book)
+      const chapters = parsed.chapters.map((chapter, index) => ({
         ...chapter,
         id: `${bookId}:${index}`,
         bookId,
         index,
-      })),
-    )
-  })
+      }))
+      await Promise.all([
+        db.chapters.bulkAdd(chapters),
+        db.chapterSummaries.bulkAdd(
+          chapters.map(({ id, bookId: idOfBook, index, title, characterCount }) => ({
+            id,
+            bookId: idOfBook,
+            index,
+            title,
+            characterCount,
+          })),
+        ),
+      ])
+    },
+  )
   return book
 }
 
@@ -62,12 +78,14 @@ export async function deleteBook(bookId: string) {
     'rw',
     db.books,
     db.chapters,
+    db.chapterSummaries,
     db.progress,
     db.bookmarks,
     async () => {
       await Promise.all([
         db.books.delete(bookId),
         db.chapters.where('bookId').equals(bookId).delete(),
+        db.chapterSummaries.where('bookId').equals(bookId).delete(),
         db.progress.delete(bookId),
         db.bookmarks.where('bookId').equals(bookId).delete(),
       ])
@@ -144,15 +162,19 @@ export async function saveReaderSettings(settings: ReaderSettings) {
 export async function clearAllData() {
   await db.transaction(
     'rw',
-    db.books,
-    db.chapters,
-    db.progress,
-    db.bookmarks,
-    db.settings,
+    [
+      db.books,
+      db.chapters,
+      db.chapterSummaries,
+      db.progress,
+      db.bookmarks,
+      db.settings,
+    ],
     async () => {
       await Promise.all([
         db.books.clear(),
         db.chapters.clear(),
+        db.chapterSummaries.clear(),
         db.progress.clear(),
         db.bookmarks.clear(),
         db.settings.clear(),

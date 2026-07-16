@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Lumina Novel - 书架</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Literata:opsz,wght@7..72,400;500&family=Newsreader:opsz,wght@6..72,500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Literata:wght@100..900&family=Newsreader:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131313; /* surface-dim */
+            color: #e5e2e1; /* on-surface */
+            -webkit-tap-highlight-color: transparent;
+        }
+        .reading-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1.5rem 1rem;
+        }
+        @media (min-width: 768px) {
+            .reading-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+        }
+        .glass-overlay {
+            background: rgba(19, 19, 19, 0.4);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#2a2a2a",
+                        "primary": "#ffb689",
+                        "on-secondary-container": "#deeeff",
+                        "surface-variant": "#353534",
+                        "on-primary-fixed-variant": "#743500",
+                        "surface-dim": "#131313",
+                        "on-tertiary-fixed": "#001f24",
+                        "surface-bright": "#393939",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#91cdff",
+                        "on-tertiary-container": "#00424a",
+                        "secondary-fixed-dim": "#91cdff",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#dbc1b4",
+                        "primary-fixed-dim": "#ffb689",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-tint": "#ffb689",
+                        "secondary-fixed": "#cce5ff",
+                        "on-primary-fixed": "#321300",
+                        "inverse-on-surface": "#313030",
+                        "surface": "#131313",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary-fixed-variant": "#004b72",
+                        "on-primary-container": "#632c00",
+                        "primary-container": "#f08d49",
+                        "outline": "#a38c80",
+                        "on-background": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#004f57",
+                        "background": "#131313",
+                        "tertiary-container": "#00b7c9",
+                        "tertiary-fixed-dim": "#4ad8eb",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary": "#512300",
+                        "tertiary": "#4ad8eb",
+                        "on-secondary": "#003350",
+                        "on-tertiary": "#00363c",
+                        "surface-container-highest": "#353534",
+                        "primary-fixed": "#ffdbc8",
+                        "inverse-primary": "#974803",
+                        "surface-container": "#201f1f",
+                        "error-container": "#93000a",
+                        "secondary-container": "#0071a8",
+                        "on-surface": "#e5e2e1",
+                        "on-secondary-fixed": "#001e31",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#554339",
+                        "tertiary-fixed": "#94f1ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "reading-margin-h": "1.5rem",
+                        "reading-margin-v": "2rem",
+                        "stack-lg": "2rem",
+                        "gutter-md": "1rem",
+                        "stack-sm": "0.5rem"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "body-reading-md": ["Literata"],
+                        "body-reading-lg": ["Literata"],
+                        "display-title": ["Newsreader"],
+                        "ui-button": ["Inter"],
+                        "headline-md": ["Newsreader"],
+                        "headline-lg": ["Newsreader"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-reading-md": ["18px", {"lineHeight": "32px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "body-reading-lg": ["20px", {"lineHeight": "36px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "display-title": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "ui-button": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-label-sm text-on-background">
+<!-- TopAppBar -->
+<header class="bg-background fixed top-0 w-full z-40 transition-opacity duration-200 h-16 flex justify-between items-center px-reading-margin-h shadow-none">
+<div class="flex items-center gap-6">
+<h1 class="font-display-title text-display-title text-on-surface">书架</h1>
+<nav class="hidden md:flex gap-4">
+<span class="text-primary font-bold">最近阅读</span>
+<span class="text-on-surface-variant hover:bg-surface-variant px-2 rounded transition-colors cursor-pointer">收藏</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant rounded-full transition-colors">history</button>
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant rounded-full transition-colors">search</button>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-variant rounded-full transition-colors">more_vert</button>
+</div>
+</header>
+<!-- Content Canvas -->
+<main class="pt-20 pb-24 px-reading-margin-h min-h-screen">
+<!-- Category Filters -->
+<div class="flex gap-2 overflow-x-auto pb-6 scrollbar-hide">
+<button class="bg-primary-container text-on-primary-container px-4 py-1.5 rounded-full font-ui-button text-ui-button whitespace-nowrap">全部</button>
+<button class="bg-surface-container text-on-surface-variant px-4 py-1.5 rounded-full font-ui-button text-ui-button whitespace-nowrap hover:bg-surface-variant">正在阅读</button>
+<button class="bg-surface-container text-on-surface-variant px-4 py-1.5 rounded-full font-ui-button text-ui-button whitespace-nowrap hover:bg-surface-variant">听书</button>
+<button class="bg-surface-container text-on-surface-variant px-4 py-1.5 rounded-full font-ui-button text-ui-button whitespace-nowrap hover:bg-surface-variant">短剧</button>
+<button class="ml-auto flex items-center gap-1 text-on-surface-variant font-ui-button text-ui-button px-2">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                筛选
+            </button>
+</div>
+<!-- Bookshelf Grid -->
+<div class="reading-grid max-w-[1200px] mx-auto">
+<!-- Book Card 1 -->
+<div class="group flex flex-col gap-2 cursor-pointer">
+<div class="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-surface-container-high border border-outline-variant shadow-sm group-hover:scale-[1.02] transition-transform duration-300">
+<img class="w-full h-full object-cover" data-alt="A cinematic book cover illustration for a high fantasy novel. A lone swordsman stands atop a mist-covered mountain peak, looking towards a glowing celestial city in the clouds. The art style is painterly and epic, with deep indigos and brilliant amber lighting. High-end editorial fantasy aesthetic with clean typography at the bottom." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5rT5BicyOsLxRiqV63lYU6c9p3cpU7Yhi60hPXyqcdJusp2lDXy61tj0HP7z7nRA801uuxOttZMiZFTtZ0yZ9E4W1qo2WW9i5BydABULAv2udPRg-sU07RPN0holL9d3F8gkDysk2NV_jR0L31gS4mRuR60Io28cQBAmEDjdvzf0CTL4sZ-9a04vNzvhMm6xiRaKKXkleXIdBQqYV6MLnTvGV9RLq5ObWONRESsBVshi9Iq0jnFp0lg"/>
+<div class="absolute top-2 right-2 bg-primary text-on-primary text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">完结</div>
+<div class="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent flex items-end p-3">
+<div class="w-full h-1 bg-white/20 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 85%;"></div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-0.5">
+<h3 class="font-headline-md text-on-surface truncate">争仙</h3>
+<p class="text-on-surface-variant text-[12px] opacity-70">已读 85% · 第21章</p>
+</div>
+</div>
+<!-- Book Card 2 -->
+<div class="group flex flex-col gap-2 cursor-pointer">
+<div class="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-surface-container-high border border-outline-variant shadow-sm group-hover:scale-[1.02] transition-transform duration-300">
+<img class="w-full h-full object-cover" data-alt="A beautiful digital painting for an Eastern fantasy cultivation novel cover. A mystical character in flowing white robes sits in meditative repose amidst cherry blossom petals. Soft, ethereal lighting with a palette of pastel pinks, whites, and deep charcoal background. The mood is peaceful yet powerful, following a minimalist-corporate hybrid design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEWX-G_xv4GLQjow_1ATaS9UDK_NJb3ZbVsSJdA-xw93mkjrDeW-ZLS1z9TtEABJ9zsGqhf0CRfIuXS2Zi0P12BFgbmyvIj6Jav36pXvLUy-asrvz73IYxoIzX_1rZ8wLiHlMvo4B5pva09p-5M73RaSXaVH0rZVgWHgehm5M5hYgsTv0mc0teaTGQPZPiT68GtksdeQKaoFwebZs4ZkYuonwFCgfaP-Y072wXPQuMfLZk3Bs1sj3Hmw"/>
+<div class="absolute top-2 right-2 bg-secondary text-on-secondary text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">连载</div>
+<div class="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent flex items-end p-3">
+<div class="w-full h-1 bg-white/20 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 12%;"></div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-0.5">
+<h3 class="font-headline-md text-on-surface truncate">仙界闭关小能手</h3>
+<p class="text-on-surface-variant text-[12px] opacity-70">已读 12% · 第1943章</p>
+</div>
+</div>
+<!-- Book Card 3 -->
+<div class="group flex flex-col gap-2 cursor-pointer">
+<div class="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-surface-container-high border border-outline-variant shadow-sm group-hover:scale-[1.02] transition-transform duration-300">
+<img class="w-full h-full object-cover" data-alt="A dramatic movie-style poster for a modern drama novel. A rugged protagonist stands in a rural village setting at sunset, with a farmhouse and livestock in the soft-focus background. The lighting is warm and golden, evoking nostalgia and quiet luxury. Minimalist typography overlays the scene, which uses a palette of ochre, earthy browns, and soft orange." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJ_0Tennxko4owKXeZ73-jilGs8Z8PN9l9aso9LwrdRkSKqcK3DkOIMjUQOBEP09qBdHd1pQd7XDYpWdoVQOsqh7HOen8yGgSUiHfQgAiBzY8u7yIGZi_N6AVVhkNNGTA1wA1TLOOboJS-JweWlnmGzcEa_fEQ2CO9Ml1U-QLIpFuidMs32Xc88_38CCjMg85Lp0h0V-Xn4IaIsYhBGLItVcmtrrRY9oex_fxNtwxOllyp8chU33RPZw"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/0 transition-colors">
+<span class="material-symbols-outlined text-white text-4xl opacity-80" data-weight="fill">play_circle</span>
+</div>
+<div class="absolute top-2 right-2 bg-tertiary text-on-tertiary text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">漫剧</div>
+</div>
+<div class="flex flex-col gap-0.5">
+<h3 class="font-headline-md text-on-surface truncate">林峰寻妻记</h3>
+<p class="text-on-surface-variant text-[12px] opacity-70">已看到第106集</p>
+</div>
+</div>
+<!-- Book Card 4 -->
+<div class="group flex flex-col gap-2 cursor-pointer">
+<div class="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-surface-container-high border border-outline-variant shadow-sm group-hover:scale-[1.02] transition-transform duration-300">
+<img class="w-full h-full object-cover" data-alt="Intricate digital art for a wuxia-style novel. A character in jade green robes stands before a misty waterfall and ancient pine trees. Traditional Chinese ink aesthetic mixed with modern digital clarity. High contrast between deep greens and the dark charcoal environment. The mood is one of intellectual focus and calm adventure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOdf8pJcaE3DI6aJvaFo3GenPbJ5d0Etqt9awZI9cS5NCmIg8swy8BVUbrKgcJWPvGHLzCj0aN8IdcuVBke7io80A_xF-RWoDQ5reV4iQISyrtl3PRAhTyhpGZo2TooYY1c_Ee0hkVm2tm96yuzGIKybWsVeXUF2MHKtEgdhC8ElucUSJIY9p9HtETCP0OHvFa9Xtr3dT6tmV1SpnXXjO5kqcraf-ru1EdftZMl4uaDOpgxf4Ev-hwUw"/>
+<div class="absolute top-2 right-2 bg-tertiary text-on-tertiary text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">漫剧</div>
+</div>
+<div class="flex flex-col gap-0.5">
+<h3 class="font-headline-md text-on-surface truncate">凡人修仙之仙眼</h3>
+<p class="text-on-surface-variant text-[12px] opacity-70">已看到第1集</p>
+</div>
+</div>
+<!-- Book Card 5 -->
+<div class="group flex flex-col gap-2 cursor-pointer">
+<div class="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-surface-container-high border border-outline-variant shadow-sm group-hover:scale-[1.02] transition-transform duration-300">
+<img class="w-full h-full object-cover" data-alt="A gritty and atmospheric cover for an urban legend or reincarnation story. A character works at a street food stall in a bustling night market, illuminated by the warm glow of steam and incandescent bulbs. The style is immersive and cinematic, emphasizing deep shadows and rich textures. A sophisticated dark-mode palette with highlights of glowing orange." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDW__7ZYDomgOe8kq6u6O1ztvRzQ-lyDMTJFhjmIVkXj5juy7JzcCMKWiCahW7fY7Pwm3kGrcw7gcQXAE7ab2YJVD4F_PKaEL_KpovPHmG1jLm5f9zp3vTGVTs3a9OIYIdm7hCmQ3KdxmqICwQTadFVZh1GzXMTtYlmylEa6gPAfmv-bKG7putMi_4zP8I-SIA68neU3cf5tc2OA-s5dnZLG6SCmE6KZx-UyLXYljY9tP5ipCJ6zNrr0g"/>
+<div class="absolute top-2 right-2 bg-tertiary text-on-tertiary text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">漫剧</div>
+</div>
+<div class="flex flex-col gap-0.5">
+<h3 class="font-headline-md text-on-surface truncate">重回九二：猪下水里捞金饭碗</h3>
+<p class="text-on-surface-variant text-[12px] opacity-70">已看到第43集</p>
+</div>
+</div>
+<!-- Book Card 6 -->
+<div class="group flex flex-col gap-2 cursor-pointer">
+<div class="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-surface-container-high border border-outline-variant shadow-sm group-hover:scale-[1.02] transition-transform duration-300">
+<img class="w-full h-full object-cover" data-alt="A futuristic sci-fi cultivation novel cover. A cybernetic warrior with glowing blue accents stands in a rainy, neon-lit alley. The design is sleek and modern, with sharp edges and a focus on visual precision. Deep blues, vibrant cyans, and charcoal blacks dominate the scene, evoking a sense of technologically advanced action." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLJd6D-2QbwWWvzcgnmvN8KV6M9QlyCa_DG-EXicKc3nBN03Ea3IqUenzMGAhtz3gGFVMR7ggO2KqoQFN_0s1AX7jOP4kjE0U9Ur2bIDUQnE6bNhsBhHRkAITCxwu8d_CvqytIpWSdji_hYOUi1bWJq_CMM_3sdCdNzuPisWgF6Z6h64bKXVYvkEy8RRoRJrcJ8lncYTQX203jHu3COHg-fFidBKa2yuPaQHtDI0AtxtgHg6DCQQaAGA"/>
+<div class="absolute top-2 right-2 bg-secondary text-on-secondary text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">连载</div>
+</div>
+<div class="flex flex-col gap-0.5">
+<h3 class="font-headline-md text-on-surface truncate">我一岁了还给双修系统</h3>
+<p class="text-on-surface-variant text-[12px] opacity-70">第592章 · 诡异试炼</p>
+</div>
+</div>
+<!-- Book Card 7 -->
+<div class="group flex flex-col gap-2 cursor-pointer">
+<div class="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-surface-container-high border border-outline-variant shadow-sm group-hover:scale-[1.02] transition-transform duration-300">
+<img class="w-full h-full object-cover" data-alt="A romantic and ethereal cover for a celestial fantasy novel. Two elegant female characters in pastel-colored flowing gowns stand back-to-back against a moonlit garden. Soft focus, high-end editorial feel with delicate details and a serene atmosphere. Lighting is soft and lunar, using a palette of silvers, soft pinks, and deep space blacks." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlic5L7gUIPxXxWZwtuxQWuVk4WSUN2c8Szabeqqj45au5QrVUYwz0PPqDWTKeI3L_7ZvRSwpRhnqFimm9IAEWkSjViPhJrU_tLLGHk4YIcimk2ajcXiVm_mQtogp9AbCG3dR9yi_PZaWYSwDqs_3GmQ1-lHMb0jOf7SFqJWMBeBjnXfLpIHRl15zOx795i628pRDM3VA4fWgQeK84r9ZIR5VVKaNz9cv-fmGPHYp9_GmSVYTbf9ukRQ"/>
+<div class="absolute top-2 right-2 bg-secondary text-on-secondary text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">连载</div>
+</div>
+<div class="flex flex-col gap-0.5">
+<h3 class="font-headline-md text-on-surface truncate">神雕杨过：系统逼我成为传奇</h3>
+<p class="text-on-surface-variant text-[12px] opacity-70">未读章节</p>
+</div>
+</div>
+<!-- Book Card 8 -->
+<div class="group flex flex-col gap-2 cursor-pointer">
+<div class="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-surface-container-high border border-outline-variant shadow-sm group-hover:scale-[1.02] transition-transform duration-300">
+<img class="w-full h-full object-cover" data-alt="A stylized, illustrative cover for a historical slice-of-life story. A young farmer holds a bundle of crops in an ancient courtyard, with smoke from a kitchen fire rising in the background. The art style is clean and functional-first, with vibrant natural greens and warm sunset tones. Minimalist layout with generous negative space around the central figure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGkIgcCOF9A5E2VlZmqErBJfUY9YWGQytksdLBzRtsLpnUCC6RGhXUFrAFVSNuuD4HZLGZ3np3VAEGxlaAS4ouDsEl4OB5nON3avQMMrNMGHFihp_gXrvMkHbb6Fjfzwl5EsghLo0wv31nnjDVwK5e5vcP-hiY7jobDO3uRtigysXNs8DkBMtCMEJoKKUdaoQj8CznKc39_jqFP1FpJN1ySKmuajk9Ok2eXZd3NXkTsWS6Q-7GkkTTpg"/>
+<div class="absolute top-2 right-2 bg-tertiary text-on-tertiary text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">漫剧</div>
+</div>
+<div class="flex flex-col gap-0.5">
+<h3 class="font-headline-md text-on-surface truncate">我在古代种菜烧煤过日子</h3>
+<p class="text-on-surface-variant text-[12px] opacity-70">第15章 · 首次收成</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-20 pb-safe px-4 bg-surface-container-high dark:bg-surface-container-high rounded-t-xl shadow-lg border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-80 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-label-sm text-label-sm mt-1">书城</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-80 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">movie</span>
+<span class="font-label-sm text-label-sm mt-1">短剧</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-80 hover:text-primary transition-all relative" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-sm text-label-sm mt-1">赚钱</span>
+<span class="absolute -top-1 -right-3 bg-primary-container text-on-primary-container text-[10px] px-1 rounded font-bold">签到</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-bold scale-105 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+<span class="font-label-sm text-label-sm mt-1">书架</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-80 hover:text-primary transition-all relative" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm mt-1">我的</span>
+<span class="absolute top-0 right-1 w-2 h-2 bg-error rounded-full border-2 border-surface-container-high"></span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+                card.style.transition = 'transform 0.1s';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+
+        // Hide header on scroll down
+        let lastScroll = 0;
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+            header.style.transition = 'transform 0.3s ease-out';
+            lastScroll = currentScroll;
+        });
+    </script>
+</body></html>

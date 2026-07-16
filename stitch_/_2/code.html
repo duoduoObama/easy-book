@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>小说详情 - 争仙</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Literata:opsz,wght@7..72,400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Literata:wght@100..900&family=Newsreader:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#2a2a2a",
+                        "primary": "#ffb689",
+                        "on-secondary-container": "#deeeff",
+                        "surface-variant": "#353534",
+                        "on-primary-fixed-variant": "#743500",
+                        "surface-dim": "#131313",
+                        "on-tertiary-fixed": "#001f24",
+                        "surface-bright": "#393939",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#91cdff",
+                        "on-tertiary-container": "#00424a",
+                        "secondary-fixed-dim": "#91cdff",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#dbc1b4",
+                        "primary-fixed-dim": "#ffb689",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-tint": "#ffb689",
+                        "secondary-fixed": "#cce5ff",
+                        "on-primary-fixed": "#321300",
+                        "inverse-on-surface": "#313030",
+                        "surface": "#131313",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary-fixed-variant": "#004b72",
+                        "on-primary-container": "#632c00",
+                        "primary-container": "#f08d49",
+                        "outline": "#a38c80",
+                        "on-background": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#004f57",
+                        "background": "#131313",
+                        "tertiary-container": "#00b7c9",
+                        "tertiary-fixed-dim": "#4ad8eb",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary": "#512300",
+                        "tertiary": "#4ad8eb",
+                        "on-secondary": "#003350",
+                        "on-tertiary": "#00363c",
+                        "surface-container-highest": "#353534",
+                        "primary-fixed": "#ffdbc8",
+                        "inverse-primary": "#974803",
+                        "surface-container": "#201f1f",
+                        "error-container": "#93000a",
+                        "secondary-container": "#0071a8",
+                        "on-surface": "#e5e2e1",
+                        "on-secondary-fixed": "#001e31",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#554339",
+                        "tertiary-fixed": "#94f1ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "reading-margin-h": "1.5rem",
+                        "reading-margin-v": "2rem",
+                        "stack-lg": "2rem",
+                        "gutter-md": "1rem",
+                        "stack-sm": "0.5rem"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "body-reading-md": ["Literata"],
+                        "body-reading-lg": ["Literata"],
+                        "display-title": ["Newsreader"],
+                        "ui-button": ["Inter"],
+                        "headline-md": ["Newsreader"],
+                        "headline-lg": ["Newsreader"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-reading-md": ["18px", {"lineHeight": "32px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "body-reading-lg": ["20px", {"lineHeight": "36px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "display-title": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "ui-button": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .glass-header {
+            background: rgba(19, 19, 19, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .book-shadow {
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.5);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+        }
+    </style>
+</head>
+<body class="font-label-sm selection:bg-primary selection:text-on-primary">
+<!-- Top Navigation (Shell suppressed for Task-Focus) -->
+<header class="fixed top-0 left-0 right-0 z-50 glass-header flex items-center justify-between px-reading-margin-h h-16">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">书籍详情</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface">share</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface">more_vert</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-reading-margin-h max-w-[700px] mx-auto">
+<!-- Book Header Section -->
+<section class="flex flex-col md:flex-row gap-8 mb-12">
+<div class="flex-shrink-0 mx-auto md:mx-0">
+<div class="w-32 h-44 rounded-lg overflow-hidden book-shadow border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A cinematic, high-fantasy book cover titled '争仙' featuring an ethereal glowing ancient mirror floating above a misty mountain landscape. The art style is high-end digital painting with dark charcoal tones and gold leaf accents. Dramatic lighting highlights the mirror's intricate carvings, creating a sense of mysterious power and intellectual depth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYXyw1l0wayCZ8Vj-VIaZu_Okj0V3ygTp8mMeF_k5T56Xte57HbQrjQIOsHzAogHdlnCb8KnU_TBehEDAn70S4JJ0RJWAv47Tkz28Htpz81npE93e8Bb3oQljMqVxpSdLqzJLz5F6nKh9E0Kqj1GUQ72kRZXRXb3rh_xfBnaa_NKXDCM1mOvmrLRFQUjXfVpq16u349jbmDcAnBntEMKSMaX1Xtqzk2qXvYz9DF69j2VteaCTHLhpvFQ"/>
+</div>
+</div>
+<div class="flex-1 text-center md:text-left space-y-4">
+<div>
+<h2 class="font-display-title text-display-title text-on-surface leading-tight mb-2">争仙（镜衍万法之我的铜镜能复刻）</h2>
+<div class="flex items-center justify-center md:justify-start gap-2 text-on-surface-variant">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A minimalist author profile portrait in soft charcoal and light-tone gray. The lighting is soft and professional, capturing a creative personality in a high-end editorial style. The background is a clean, dark studio setting that aligns with a premium minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOiuKZ2UOaZLDieA96AsUVu5xFHNKkSbnB_vXA2XHgnGyThooyGCrCm4J2e3k5NcLZeK6Hx7sn8ivNJuhV6fO1NhNGFRCcyEiyyQCAX4OIutWsyT4Ghvp3O9jc2ikY1KiLrCw8eNSlvqYzdzeVbNo8plZ6BLFNc-6ab6q0X30B7LkjCATXBamTwfkL-_WZTIcIyDFVGUrypwpJk-GRa1zLljEqA6TWOhkn-xDW0jzuMk3XCSL1puw7aw"/>
+</div>
+<span class="font-label-sm text-label-sm">我张大炮谁都怕</span>
+<span class="px-2 py-0.5 bg-surface-variant text-[10px] rounded-full border border-outline-variant">签约作者</span>
+</div>
+</div>
+<div class="flex flex-wrap justify-center md:justify-start gap-2">
+<span class="px-3 py-1 bg-surface-container-high rounded text-[12px] text-primary">仙侠</span>
+<span class="px-3 py-1 bg-surface-container-high rounded text-[12px] text-on-surface-variant">连载中</span>
+<span class="px-3 py-1 bg-surface-container-high rounded text-[12px] text-on-surface-variant">432章</span>
+<span class="px-3 py-1 bg-surface-container-high rounded text-[12px] text-on-surface-variant">120万字</span>
+</div>
+</div>
+</section>
+<!-- Tabs -->
+<nav class="flex border-b border-outline-variant mb-8">
+<button class="px-6 py-4 font-ui-button text-ui-button text-primary border-b-2 border-primary transition-all">目录</button>
+<button class="px-6 py-4 font-ui-button text-ui-button text-on-surface-variant hover:text-on-surface transition-all">详情</button>
+<button class="px-6 py-4 font-ui-button text-ui-button text-on-surface-variant hover:text-on-surface transition-all">书友圈</button>
+</nav>
+<!-- Chapter List Controls -->
+<div class="flex items-center justify-between mb-6">
+<span class="font-label-sm text-label-sm text-on-surface-variant">共 432 章 · 已完结</span>
+<div class="flex gap-4">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-on-surface">
+<span class="font-label-sm text-label-sm">精简</span>
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-on-surface">
+<span class="font-label-sm text-label-sm">倒序</span>
+<span class="material-symbols-outlined text-[16px]">swap_vert</span>
+</button>
+</div>
+</div>
+<!-- Chapter List -->
+<div class="space-y-1">
+<!-- Active/Last Read Chapter -->
+<div class="p-4 rounded-xl bg-surface-container-high/50 border-l-4 border-primary group cursor-pointer hover:bg-surface-container-high transition-all">
+<div class="flex justify-between items-start">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">explore</span>
+<h3 class="font-headline-md text-headline-md text-primary">第21章 古怪镜子！</h3>
+</div>
+<p class="text-[12px] text-on-surface-variant/60 ml-7">2452字 · 2023年02月18日</p>
+</div>
+<span class="text-[12px] text-primary/80 font-medium">读到 85%</span>
+</div>
+</div>
+<!-- List Items -->
+<div class="chapter-item group px-4 py-6 border-b border-outline-variant/30 cursor-pointer hover:bg-surface-container-low transition-all">
+<div class="flex flex-col gap-1">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">第22章 全是法宝！</h3>
+<p class="text-[12px] text-on-surface-variant/60">2547字 · 2023年02月19日</p>
+</div>
+</div>
+<div class="chapter-item group px-4 py-6 border-b border-outline-variant/30 cursor-pointer hover:bg-surface-container-low transition-all">
+<div class="flex flex-col gap-1">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">第23章 隐身符箓！</h3>
+<p class="text-[12px] text-on-surface-variant/60">2372字 · 2023年02月19日</p>
+</div>
+</div>
+<div class="chapter-item group px-4 py-6 border-b border-outline-variant/30 cursor-pointer hover:bg-surface-container-low transition-all">
+<div class="flex flex-col gap-1">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">第24章 何为修仙？</h3>
+<p class="text-[12px] text-on-surface-variant/60">2386字 · 2023年02月19日</p>
+</div>
+</div>
+<div class="chapter-item group px-4 py-6 border-b border-outline-variant/30 cursor-pointer hover:bg-surface-container-low transition-all">
+<div class="flex flex-col gap-1">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">第25章 购买符箓！</h3>
+<p class="text-[12px] text-on-surface-variant/60">2357字 · 2023年02月20日</p>
+</div>
+</div>
+<div class="chapter-item group px-4 py-6 border-b border-outline-variant/30 cursor-pointer hover:bg-surface-container-low transition-all">
+<div class="flex flex-col gap-1">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">第26章 冒险之行！</h3>
+<p class="text-[12px] text-on-surface-variant/60">2789字 · 2023年02月20日</p>
+</div>
+</div>
+<div class="chapter-item group px-4 py-6 border-b border-outline-variant/30 cursor-pointer hover:bg-surface-container-low transition-all">
+<div class="flex flex-col gap-1">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">第27章 筑基无望？</h3>
+<p class="text-[12px] text-on-surface-variant/60">2622字 · 2023年02月20日</p>
+</div>
+</div>
+</div>
+<!-- Load More / Pagination -->
+<div class="py-12 flex justify-center">
+<button class="px-8 py-3 rounded-full border border-outline text-on-surface-variant font-ui-button hover:bg-surface-variant transition-colors">
+                展开更多章节
+            </button>
+</div>
+</main>
+<!-- Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-50 bg-surface-container-high/90 backdrop-blur-md pb-safe border-t border-outline-variant/30 shadow-2xl">
+<div class="max-w-[700px] mx-auto flex items-center gap-4 px-6 h-20">
+<button class="flex-1 h-12 rounded-full border border-outline text-primary font-ui-button hover:bg-surface-variant transition-all">
+                加入书架
+            </button>
+<button class="flex-[2] h-12 rounded-full bg-primary-container text-on-primary-container font-ui-button shadow-lg shadow-primary/20 flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+                继续阅读
+            </button>
+<button class="w-12 h-12 rounded-full border border-outline flex items-center justify-center text-on-surface hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+<!-- Micro-interaction: Scroll Reveal -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const items = document.querySelectorAll('.chapter-item');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            items.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'all 0.4s ease-out';
+                observer.observe(item);
+            });
+        });
+    </script>
+</body></html>

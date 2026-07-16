@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>我的 - Lumina Novel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&amp;family=Literata:opsz,wght@7..72,400;7..72,500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#2a2a2a",
+                        "primary": "#ffb689",
+                        "on-secondary-container": "#deeeff",
+                        "surface-variant": "#353534",
+                        "on-primary-fixed-variant": "#743500",
+                        "surface-dim": "#131313",
+                        "on-tertiary-fixed": "#001f24",
+                        "surface-bright": "#393939",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#91cdff",
+                        "on-tertiary-container": "#00424a",
+                        "secondary-fixed-dim": "#91cdff",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#dbc1b4",
+                        "primary-fixed-dim": "#ffb689",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-tint": "#ffb689",
+                        "secondary-fixed": "#cce5ff",
+                        "on-primary-fixed": "#321300",
+                        "inverse-on-surface": "#313030",
+                        "surface": "#131313",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary-fixed-variant": "#004b72",
+                        "on-primary-container": "#632c00",
+                        "primary-container": "#f08d49",
+                        "outline": "#a38c80",
+                        "on-background": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#004f57",
+                        "background": "#131313",
+                        "tertiary-container": "#00b7c9",
+                        "tertiary-fixed-dim": "#4ad8eb",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary": "#512300",
+                        "tertiary": "#4ad8eb",
+                        "on-secondary": "#003350",
+                        "on-tertiary": "#00363c",
+                        "surface-container-highest": "#353534",
+                        "primary-fixed": "#ffdbc8",
+                        "inverse-primary": "#974803",
+                        "surface-container": "#201f1f",
+                        "error-container": "#93000a",
+                        "secondary-container": "#0071a8",
+                        "on-surface": "#e5e2e1",
+                        "on-secondary-fixed": "#001e31",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#554339",
+                        "tertiary-fixed": "#94f1ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "reading-margin-h": "1.5rem",
+                        "reading-margin-v": "2rem",
+                        "stack-lg": "2rem",
+                        "gutter-md": "1rem",
+                        "stack-sm": "0.5rem"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "body-reading-md": ["Literata"],
+                        "body-reading-lg": ["Literata"],
+                        "display-title": ["Newsreader"],
+                        "ui-button": ["Inter"],
+                        "headline-md": ["Newsreader"],
+                        "headline-lg": ["Newsreader"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-reading-md": ["18px", {"lineHeight": "32px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "body-reading-lg": ["20px", {"lineHeight": "36px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "display-title": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "ui-button": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(36, 36, 36, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid #333333;
+        }
+        .active-dot::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            background-color: #ffb689;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="pb-24">
+<!-- Top AppBar (Identity & Actions) -->
+<header class="flex justify-between items-center px-reading-margin-h h-16 w-full fixed top-0 z-50 bg-background transition-opacity duration-200">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface" data-icon="qr_code_scanner">qr_code_scanner</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface" data-icon="light_mode">light_mode</span>
+<span class="material-symbols-outlined text-on-surface" data-icon="settings">settings</span>
+</div>
+</header>
+<main class="mt-16 px-reading-margin-h space-y-stack-lg">
+<!-- Profile Header -->
+<section class="flex items-center justify-between py-stack-sm">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-full overflow-hidden border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="A professional high-contrast portrait of a young reader with a minimalist, cinematic aesthetic. The lighting is soft and moody, emphasizing a charcoal and orange color palette consistent with a premium reading app. The background is a clean, dark studio setting with subtle lens flare for a high-end editorial feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnUH1zEYQXV7LEPhZXy4-n74BhS5VBi-W2oeSlQfPyAOBt5TpnOkBMvo-JWyoXpcYg5AITnu1n2JRDY2-OYMdXy2hqJ566kc7uaiK9RlFAxcjxq2VkRHBKJl70kBeR9F_A4dbxK7G_q1GWBwPh9qG-dSBL0jhdrZCyoEwwbkOMghQb79PpER3xeMm9X2QJ3sI1LAJA17jKweyg0EX74dLXn4Bv4yUwIcAJZ_bkBOxRC3aHnOTVY996fQ"/>
+</div>
+<div class="space-y-1">
+<h1 class="font-headline-md text-headline-md text-on-surface">爱吃燕鲍翅的酆瑶</h1>
+<div class="flex gap-4 text-on-surface-variant font-label-sm text-label-sm">
+<span>关注 0</span>
+<span>粉丝 0</span>
+<span>获赞 0</span>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</section>
+<!-- Quick Actions Grid -->
+<section class="grid grid-cols-4 gap-gutter-md text-center">
+<div class="space-y-2 group cursor-pointer">
+<div class="flex justify-center">
+<span class="material-symbols-outlined text-on-surface group-hover:text-primary transition-colors" data-icon="receipt_long">receipt_long</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">我的订单</p>
+</div>
+<div class="space-y-2 group cursor-pointer">
+<div class="flex justify-center">
+<span class="material-symbols-outlined text-on-surface group-hover:text-primary transition-colors" data-icon="history">history</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">浏览历史</p>
+</div>
+<div class="space-y-2 group cursor-pointer relative">
+<div class="flex justify-center active-dot">
+<span class="material-symbols-outlined text-on-surface group-hover:text-primary transition-colors" data-icon="chat_bubble">chat_bubble</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">我的消息</p>
+</div>
+<div class="space-y-2 group cursor-pointer relative">
+<div class="flex justify-center active-dot">
+<span class="material-symbols-outlined text-on-surface group-hover:text-primary transition-colors" data-icon="edit_note">edit_note</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">成为作家</p>
+</div>
+</section>
+<!-- Continue Reading Card (Contextual) -->
+<section class="glass-card rounded-xl p-4 flex items-center gap-4">
+<img class="w-12 h-16 object-cover rounded shadow-md" data-alt="A minimalist book cover design for a fantasy novel titled '争仙'. The cover art features an ink-wash painting style of a dragon swirling through dark clouds on a parchment-colored background. The typography is elegant and traditional, fitting a high-end editorial reading experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIL7ItmUxcYzAigXePldJQRogqkaV83e4B2se9mMQFkO_9iWqG3PUZq4Rdb_NTpojP8lX1xnMLJujOruDPRFj0QJdGVQlii5-Ja_UHKNMuhbsnxB_UkhM5ETytR0H2h4lQnER3obE7WLCvmBoEyydOslGelgNasbWNcUjhP7q9V4PY2qdCtwTrDaGQqzWPm_kHpby_Gv13nQz9smjEk1_FZUcLX5RJHoORjKwR3b2jO1akQ_L0hkzbfw"/>
+<div class="flex-1 min-w-0">
+<h3 class="font-headline-md text-label-sm text-on-surface truncate">争仙</h3>
+<p class="text-on-surface-variant text-label-sm truncate">第21章 古怪镜子！</p>
+</div>
+<button class="bg-primary-container text-on-primary-container px-4 py-2 rounded-full font-ui-button text-ui-button hover:opacity-90 transition-opacity flex items-center gap-1">
+                继续阅读
+                <span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</section>
+<!-- Wallet / Balance Section -->
+<section class="glass-card rounded-xl overflow-hidden">
+<div class="p-6 grid grid-cols-2 divide-x divide-outline-variant">
+<div class="text-center px-4">
+<p class="text-on-surface-variant font-label-sm text-label-sm mb-1">金币</p>
+<p class="text-2xl font-bold text-on-surface">0</p>
+</div>
+<div class="text-center px-4 flex flex-col items-center">
+<p class="text-on-surface-variant font-label-sm text-label-sm mb-1">余额 (元)</p>
+<p class="text-2xl font-bold text-on-surface">0.44</p>
+</div>
+</div>
+<div class="px-6 pb-6 flex justify-between items-center">
+<div class="flex items-center gap-2 bg-surface-container-high px-3 py-1.5 rounded-lg">
+<span class="bg-primary-container text-[10px] text-on-primary-container px-1 rounded">福利</span>
+<span class="text-label-sm text-on-surface-variant">领取爱心晚餐补贴</span>
+</div>
+<a class="text-primary font-ui-button text-ui-button flex items-center gap-1" href="#">
+                    微信提现
+                    <span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+</section>
+<!-- Detailed List Options -->
+<section class="space-y-4">
+<div class="flex justify-between items-center py-2 group cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="military_tech">military_tech</span>
+<span class="font-ui-button text-on-surface">我的等级</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="flex justify-between items-center py-2 group cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="stars">stars</span>
+<span class="font-ui-button text-on-surface">成就勋章</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="flex justify-between items-center py-2 group cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="card_giftcard">card_giftcard</span>
+<span class="font-ui-button text-on-surface">邀好友赚金币</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="flex justify-between items-center py-2 group cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="help">help</span>
+<span class="font-ui-button text-on-surface">帮助与反馈</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-20 pb-safe px-4 bg-surface-container-high dark:bg-surface-container-high border-t border-outline-variant shadow-lg rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-80 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="font-label-sm text-label-sm">书城</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-80 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="movie">movie</span>
+<span class="font-label-sm text-label-sm">短剧</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-80 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-sm text-label-sm">赚钱</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-80 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-label-sm text-label-sm">书架</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-bold scale-105 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm">我的</span>
+</a>
+</nav>
+<!-- Interaction Script -->
+<script>
+        document.querySelectorAll('a, button, div.cursor-pointer').forEach(el => {
+            el.addEventListener('touchstart', () => {
+                el.classList.add('scale-95');
+                el.style.transition = 'transform 0.1s ease';
+            });
+            el.addEventListener('touchend', () => {
+                el.classList.remove('scale-95');
+                el.classList.add('scale-100');
+            });
+        });
+    </script>
+</body></html>

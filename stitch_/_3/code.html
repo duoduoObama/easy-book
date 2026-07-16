@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Lumina Novel - 阅读器</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Literata:opsz,wght@7..72,200..900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#2a2a2a",
+                    "primary": "#ffb689",
+                    "on-secondary-container": "#deeeff",
+                    "surface-variant": "#353534",
+                    "on-primary-fixed-variant": "#743500",
+                    "surface-dim": "#131313",
+                    "on-tertiary-fixed": "#001f24",
+                    "surface-bright": "#393939",
+                    "on-error-container": "#ffdad6",
+                    "secondary": "#91cdff",
+                    "on-tertiary-container": "#00424a",
+                    "secondary-fixed-dim": "#91cdff",
+                    "on-error": "#690005",
+                    "on-surface-variant": "#dbc1b4",
+                    "primary-fixed-dim": "#ffb689",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-tint": "#ffb689",
+                    "secondary-fixed": "#cce5ff",
+                    "on-primary-fixed": "#321300",
+                    "inverse-on-surface": "#313030",
+                    "surface": "#131313",
+                    "surface-container-low": "#1c1b1b",
+                    "on-secondary-fixed-variant": "#004b72",
+                    "on-primary-container": "#632c00",
+                    "primary-container": "#f08d49",
+                    "outline": "#a38c80",
+                    "on-background": "#e5e2e1",
+                    "on-tertiary-fixed-variant": "#004f57",
+                    "background": "#131313",
+                    "tertiary-container": "#00b7c9",
+                    "tertiary-fixed-dim": "#4ad8eb",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-primary": "#512300",
+                    "tertiary": "#4ad8eb",
+                    "on-secondary": "#003350",
+                    "on-tertiary": "#00363c",
+                    "surface-container-highest": "#353534",
+                    "primary-fixed": "#ffdbc8",
+                    "inverse-primary": "#974803",
+                    "surface-container": "#201f1f",
+                    "error-container": "#93000a",
+                    "secondary-container": "#0071a8",
+                    "on-surface": "#e5e2e1",
+                    "on-secondary-fixed": "#001e31",
+                    "error": "#ffb4ab",
+                    "outline-variant": "#554339",
+                    "tertiary-fixed": "#94f1ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "reading-margin-h": "1.5rem",
+                    "reading-margin-v": "2rem",
+                    "stack-lg": "2rem",
+                    "gutter-md": "1rem",
+                    "stack-sm": "0.5rem"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "body-reading-md": ["Literata"],
+                    "body-reading-lg": ["Literata"],
+                    "display-title": ["Newsreader"],
+                    "ui-button": ["Inter"],
+                    "headline-md": ["Newsreader"],
+                    "headline-lg": ["Newsreader"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-reading-md": ["18px", {"lineHeight": "32px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "body-reading-lg": ["20px", {"lineHeight": "36px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "display-title": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "ui-button": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-dot::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: currentColor;
+        }
+        .backdrop-blur-reader {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        ::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface select-none overflow-hidden h-screen flex flex-col font-body-reading-md">
+<!-- Reading Canvas (Immersive Mode Base) -->
+<main class="flex-grow overflow-y-auto px-reading-margin-h pt-24 pb-32" id="reading-canvas">
+<div class="max-w-[700px] mx-auto transition-all duration-300">
+<h1 class="font-headline-lg text-headline-lg mb-10 text-on-surface opacity-90">第21章 古怪镜子</h1>
+<div class="space-y-6 text-on-surface-variant font-body-reading-md text-body-reading-md">
+<p>“这位师兄，我刚接到来承仙殿发放年俸的任务，还请问师兄，我该……”</p>
+<p>不等他话说完，柜台后的弟子就伸出手：“拿出腰牌我看看！”</p>
+<p>王铮立刻将腰牌双手奉上。</p>
+<p>柜台后的弟子拿起腰牌，在柜台上的名册上一晃，随着名册一阵翻动停下来后，他才将腰牌归还给王铮，同时指了指承仙殿后堂的方向。</p>
+<p>“在那边，穿过这道屏风，往左转走到底就是了。不过，若是见到什么不该看的东西，莫要大惊小怪，坏了规矩，谁也保不住你。”</p>
+<p>王铮心中一凛，连声称是。他收好腰牌，顺着指引穿过那扇绘满山河气韵的屏风，只觉一股微凉的灵气扑面而来。</p>
+<p>后堂寂静得落针可闻，两侧的灯盏中跳跃着幽蓝的灵火。王铮屏住呼吸，快步疾行。然而当他走到走廊尽头时，并没有看到所谓的年俸领取处，反而是一面巨大的、泛着古怪青铜光泽的古镜矗立在那里。</p>
+<p>镜面如水波般微微荡漾，映射出的并非后堂的陈设，而是一片混沌的星空。王铮好奇地凑近了些，却发现镜中忽然浮现出一双眼睛，深邃、冰冷，仿佛能洞穿神魂。</p>
+<p>那一刻，他感觉手中的腰牌忽然变得滚烫无比。</p>
+<p>“怎么回事……”他刚想后退，却发现脚下仿佛生了根。镜中的混沌星空开始急速旋转，一股庞大的吸力从中爆发，周围的空间似乎都因为这股力量而产生了扭曲。</p>
+<p>王铮只觉得自己像是一叶扁舟，被卷入了这不知名的风暴之中。</p>
+</div>
+</div>
+</main>
+<!-- UI Overlay Layer (Toggled by Tap) -->
+<div class="fixed inset-0 pointer-events-none z-50" id="ui-overlays">
+<!-- Top App Bar -->
+<header class="absolute top-0 left-0 w-full h-20 bg-surface/80 backdrop-blur-reader flex items-center justify-between px-4 transition-transform duration-300 pointer-events-auto">
+<button class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined text-on-surface">arrow_back_ios_new</span>
+</button>
+<div class="flex-grow flex flex-col items-center">
+<span class="font-headline-md text-headline-md opacity-90">第21章 古怪镜子</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Lumina Reader</span>
+</div>
+<div class="flex gap-2">
+<button class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined text-on-surface">bookmarks</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined text-on-surface">more_vert</span>
+</button>
+</div>
+</header>
+<!-- TTS FAB (Listen) -->
+<button class="absolute bottom-64 right-6 w-14 h-14 bg-surface-container-high/90 backdrop-blur-reader rounded-full shadow-lg flex items-center justify-center pointer-events-auto hover:bg-primary-container transition-colors group">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary-container">headphones</span>
+</button>
+<!-- Bottom Settings Drawer -->
+<div class="absolute bottom-0 left-0 w-full bg-surface-container-high rounded-t-3xl p-6 transition-transform duration-500 transform translate-y-0 pointer-events-auto shadow-[0_-8px_40px_-12px_rgba(0,0,0,0.5)]" id="settings-drawer">
+<!-- Controls Grid -->
+<div class="space-y-8 max-w-[600px] mx-auto">
+<!-- Brightness Slider -->
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-on-surface-variant">light_mode</span>
+<div class="relative flex-grow h-1 bg-surface-variant rounded-full">
+<div class="absolute left-0 top-0 h-full w-2/3 bg-primary rounded-full"></div>
+<div class="absolute left-2/3 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 bg-primary rounded-full shadow-md border-4 border-surface-container-high"></div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">dark_mode</span>
+</div>
+<!-- Font Size & Family -->
+<div class="flex items-center justify-between">
+<div class="flex items-center bg-surface-variant/40 rounded-xl p-1">
+<button class="px-6 py-2 rounded-lg font-ui-button text-ui-button hover:bg-surface-variant transition-colors">A-</button>
+<span class="px-4 font-bold text-primary">20</span>
+<button class="px-6 py-2 rounded-lg font-ui-button text-ui-button hover:bg-surface-variant transition-colors">A+</button>
+</div>
+<button class="flex items-center gap-2 bg-surface-variant/40 px-5 py-2.5 rounded-xl">
+<span class="font-ui-button text-ui-button">系统字体</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+<!-- Color Themes -->
+<div class="flex justify-between items-center px-2">
+<button class="w-10 h-10 rounded-full border-2 border-primary bg-background ring-4 ring-primary/20"></button>
+<button class="w-10 h-10 rounded-full border border-outline-variant bg-[#F4ECD8]"></button>
+<button class="w-10 h-10 rounded-full border border-outline-variant bg-[#E1EDD8]"></button>
+<button class="w-10 h-10 rounded-full border border-outline-variant bg-[#E6F3F4]"></button>
+<button class="w-10 h-10 rounded-full border border-outline-variant bg-[#1A1A1A]"></button>
+<button class="w-10 h-10 rounded-full border border-outline-variant bg-[#2C2C2C]"></button>
+</div>
+<!-- Navigation Tabs (Bottom Bar Replacement inside Drawer) -->
+<div class="flex justify-around items-center pt-4 border-t border-outline-variant/30">
+<div class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined">list</span>
+<span class="font-label-sm text-label-sm">目录</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined">brightness_4</span>
+<span class="font-label-sm text-label-sm">日间</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary relative">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm font-bold">设置</span>
+<div class="absolute -bottom-2 w-1 h-1 bg-primary rounded-full"></div>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined">movie_edit</span>
+<span class="font-label-sm text-label-sm">改编剧场</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Micro-interaction: Zen Mode Script -->
+<script>
+        const canvas = document.getElementById('reading-canvas');
+        const overlays = document.getElementById('ui-overlays');
+        const drawer = document.getElementById('settings-drawer');
+        const header = document.querySelector('header');
+        let uiVisible = true;
+
+        canvas.addEventListener('click', (e) => {
+            // Only toggle if clicked the main area (not text selection)
+            if (window.getSelection().toString().length > 0) return;
+            
+            uiVisible = !uiVisible;
+            if (uiVisible) {
+                overlays.style.opacity = '1';
+                overlays.style.pointerEvents = 'auto';
+                header.classList.remove('-translate-y-full');
+                drawer.classList.remove('translate-y-full');
+            } else {
+                overlays.style.opacity = '0';
+                overlays.style.pointerEvents = 'none';
+                header.classList.add('-translate-y-full');
+                drawer.classList.add('translate-y-full');
+            }
+        });
+
+        // Prevention for drawer clicks to stop propagation
+        drawer.addEventListener('click', (e) => e.stopPropagation());
+        header.addEventListener('click', (e) => e.stopPropagation());
+
+        // Simple scroll hiding
+        let lastScroll = 0;
+        canvas.addEventListener('scroll', () => {
+            const currentScroll = canvas.scrollTop;
+            if (currentScroll > lastScroll && uiVisible && currentScroll > 50) {
+                // Auto-hide UI on scroll down
+                uiVisible = false;
+                overlays.style.opacity = '0';
+                overlays.style.pointerEvents = 'none';
+                header.classList.add('-translate-y-full');
+                drawer.classList.add('translate-y-full');
+            }
+            lastScroll = currentScroll;
+        });
+    </script>
+</body></html>
